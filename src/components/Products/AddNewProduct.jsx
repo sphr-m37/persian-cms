@@ -65,12 +65,12 @@ export const AddNewProduct = () => {
                 <div className='w-full mt-5 text-center md:text-right '>
 
                     <button type='submit' className='text-green-600
-                     bg-white rounded-sm mr-1 p-1 px-2 '
+                     bg-white rounded-sm mr-1 p-1 px-2 text-sm'
                     >افزودن
                     </button>
 
                     <button className='text-red-600
-                     bg-white rounded-sm mr-1 p-1 px-2 '>
+                     bg-white rounded-sm mr-1 p-1 px-2 text-sm'>
                         انصراف
                     </button>
                 </div>

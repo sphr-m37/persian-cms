@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorMsg } from '../index'
+import { ErrorMsg, ProductsList } from '../index'
 import { AddNewProduct } from '../index'
 
 export const Products = () => {
@@ -7,6 +7,7 @@ export const Products = () => {
     <div>
       <AddNewProduct />
       <ErrorMsg msg='no product found' />
+      <ProductsList />
     </div>
   )
 }
