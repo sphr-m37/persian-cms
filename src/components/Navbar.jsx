@@ -27,7 +27,7 @@ export const Navbar = () => {
 
       <div className='flex justify-between items-center sm:mr-auto'>
         <div className='mx-auto sm:mx-0 sm:mr-auto flex items-center bg-white  rounded-md'>
-         <AiOutlineSearch className='text-xl' />
+          <AiOutlineSearch className='text-xl' />
 
           <input type="search" placeholder='جستجو' className='h-8 placeholder:text-sm rounded-md focus:outline-none pb-1' />
         </div>
