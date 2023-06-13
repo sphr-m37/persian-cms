@@ -1,5 +1,5 @@
 import React from 'react'
-import {ErrorMsg, Modal} from '../index'
+import {ErrorMsg} from '../index'
 
 export const Comments = () => {
   return (
