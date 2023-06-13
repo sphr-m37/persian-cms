@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md'
+import { Button } from '../../index'
 
 
 
@@ -31,7 +32,8 @@ export const AddNewProduct = () => {
                         onClick={() => setOpenForm(prev => !prev)} />}
 
             </section>
-            <form onSubmit={submitHandler}
+            <form
+                onSubmit={submitHandler}
                 className={`flex flex-wrap duration-200 origin-top ${!openForm && 'hidden'}`}>
 
                 <div className={formGroupStyel}>
@@ -64,18 +66,14 @@ export const AddNewProduct = () => {
 
                 <div className='w-full mt-5 text-center md:text-right '>
 
-                    <button type='submit' className='text-green-600
-                     bg-white rounded-sm mr-1 p-1 px-2 text-sm'
-                    >افزودن
-                    </button>
+                    <Button type='submit' onClick={submitHandler} title='افزودن' textcolor='green-500' bgcolor='white' />
+                    
+                    <Button type='button' click={()=>console.table('object')} title='انصراف' textcolor='red-500' bgcolor='white' />
 
-                    <button className='text-red-600
-                     bg-white rounded-sm mr-1 p-1 px-2 text-sm'>
-                        انصراف
-                    </button>
                 </div>
 
             </form>
+
         </div>
 
     )
