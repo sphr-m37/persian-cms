@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
-
+import demoItem from '../../assets/react.svg'
 import { Modal } from '../../index'
 
 export const ProductsList = () => {
-
     const [showModal, setShowModal] = useState(false)
-
+    const handleClose = () => setShowModal(prev => !prev)
     return (
         <div className='bg-gray-400 rounded-md p-2 mt-2'>
-
             <table className='w-full rounded-md pt-3'>
                 <thead>
-                    <th>
+                    <th >
                         تصویر
                     </th>
                     <th>
@@ -24,13 +22,12 @@ export const ProductsList = () => {
                         موجودی
                     </th>
                 </thead>
-
                 <tbody className='text-center'>
-
                     <tr className='cursor-pointer hover:bg-gray-500 hover:text-gray-200 text-center'
-                        onClick={() => setShowModal(prev => !prev)}>
-                        <td className='py-3 rounded-r-md'>
-                            <img src="" alt="samsung" />
+                        onClick={handleClose}>
+
+                        <td className='py-3 rounded-r-md '>
+                            <img src={demoItem} alt="samsung" />
                         </td>
                         <td>
                             گوشی موبایل samsung A72
@@ -46,7 +43,7 @@ export const ProductsList = () => {
             </table>
             {showModal && <Modal
                 show={showModal}
-                handleClose={setShowModal} />}
+                handleClose={handleClose} />}
         </div>
     )
 }
