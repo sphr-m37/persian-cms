@@ -17,3 +17,9 @@ export { NotFound } from './pages/NotFound'
 export { Discounts } from './pages/Discounts'
 // routs
 export { routes } from './routing/routes'
+// redux
+export { store } from './redux/store'
+export { productsReducer } from './redux/reducers/productsReducer'
+export { getProducts } from './redux/actions/productsAction'
+
+export {usersReducer} from './redux/reducers/usersReducer'
