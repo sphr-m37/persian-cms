@@ -1,13 +1,13 @@
 import React from 'react'
-import { ErrorMsg, ProductsList } from '../index'
-import { AddNewProduct } from '../index'
+// components
+import { ErrorMsg, ProductsList, AddNewItem } from '../index'
+
 
 export const Products = () => {
-
   return (
-    <div>
-      <AddNewProduct />
+    <>
+      <AddNewItem text={'افزودن محصول'} />
       <ProductsList />
-    </div>
+    </>
   )
 }

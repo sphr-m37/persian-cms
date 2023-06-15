@@ -1,7 +1,6 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '../../index'
-import demoItem from '../../assets/react.svg'
 
 export const DetailModal = ({ handleClose }) => {
     return (
@@ -25,7 +24,7 @@ export const DetailModal = ({ handleClose }) => {
                                     <tbody className=''>
                                         <tr className='cursor-pointer'>
                                             <td >
-                                                <img src={demoItem} alt="" />
+                                                <img src='' alt='' />
                                             </td>
                                             <td>آموزش ری اکت</td>
                                             <td>4,000,000</td>

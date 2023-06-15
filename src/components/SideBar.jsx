@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
+
+// react router dom
 import { NavLink, useLocation } from 'react-router-dom'
 
+// icon
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import { GrFormClose } from 'react-icons/gr'
 
-
+// tailwind css classes
 const listItemStyle = `px-2 my-1
 cursor-pointer
 hover:bg-gray-800
 `
-
+// //
 export const SideBar = () => {
 
     const [open, setOpen] = useState(false)
