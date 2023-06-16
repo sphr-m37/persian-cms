@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // components
-import { Button, DeleteModal, DetailModal, ErrorMsg, Products } from '../index'
+import { Button, DeleteModal, DetailModal, EditModal, ErrorMsg, Products } from '../index'
 // axios
 import axios from 'axios'
 // redux
@@ -14,14 +14,12 @@ export const ProductsList = () => {
     const [currentProduct, setCurrentProduct] = useState({})
     const [showِDeleteModal, setShowDeleteModal] = useState(false)
     const [showِDetailModal, setShowDetailModal] = useState(false)
+    const [showِEditlModal, setShowEditlModal] = useState(false)
     const handleDeleteModal = () => setShowDeleteModal(prev => !prev)
     const handleDetailModal = () => setShowDetailModal(prev => !prev)
-    const getall = async () => {
-        const res = await axios.get('http://luca.iran.liara.ir/:31497/api')
-        console.log(res)
-    }
+    const handleEditModal = () => setShowEditlModal(prev => !prev)
+
     useEffect(() => {
-        // getall()
         dispatch(getProducts())
     }, [])
 
@@ -29,8 +27,15 @@ export const ProductsList = () => {
         setCurrentProduct(product)
         handleDeleteModal()
     }
+    const editeProduct = (product) => {
+        setCurrentProduct(product)
+        handleEditModal()
+    }
 
-
+    const showDetailHandle = (product) => {
+        setCurrentProduct(product)
+        handleDetailModal()
+    }
 
     return (<>
         {products.length > 0 ? <div className='my-2'>
@@ -39,10 +44,7 @@ export const ProductsList = () => {
                     <th>تصویر</th>
                     <th>عنوان</th>
                     <th>قیمت</th>
-                    <th>محبوبیت</th>
                     <th>موجودی</th>
-                    <th>فروش</th>
-                    <th>تعداد رنگ بندی</th>
                     <th>گزینه ها</th>
                 </tr>
                 {products.map(product => <tr key={product.id} className='cursor-pointer'>
@@ -52,13 +54,13 @@ export const ProductsList = () => {
                     <td>{product.title}</td>
                     <td>{product.price}</td>
                     <td>{product.count}</td>
-                    <td>{product.popularity}</td>
-                    <td>{product.sale}</td>
-                    <td>{product.colors}</td>
                     <td>
                         <Button className='text-red-600 hover:opacity-80' onClick={() => deleteProduct(product)}>حذف</Button>
-                        <Button className='text-yellow-600 hover:opacity-80 '>ویرایش</Button>
-                        <Button className='text-blue-600 hover:opacity-80' >جزئیات</Button>
+                        <Button className='text-yellow-600 hover:opacity-80'
+                            onClick={() => editeProduct(product)}
+                        >ویرایش</Button>
+                        <Button className='text-blue-600 hover:opacity-80'
+                            onClick={() => showDetailHandle(product)}>جزئیات</Button>
                     </td>
                 </tr>)}
             </table>
@@ -67,7 +69,13 @@ export const ProductsList = () => {
             <ErrorMsg title={'NO PRODUCT FOUND'} />
         }
         {
-            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} product={currentProduct} />
+            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} item={currentProduct} getProducts={getProducts} />
+        }
+        {
+            showِDetailModal && <DetailModal handleDetailModal={handleDetailModal} item={currentProduct} />
+        }
+        {
+            showِEditlModal && <EditModal handleEditModal={handleEditModal} item={currentProduct} />
         }
     </>
 

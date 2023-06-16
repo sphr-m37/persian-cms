@@ -2,13 +2,19 @@ import React from 'react'
 import { Button } from '../../index'
 import { createPortal } from 'react-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
-export const DeleteModal = ({ handleDeleteModal, product }) => {
+export const DeleteModal = ({ handleDeleteModal, item, getProducts }) => {
 
+    const dispatch = useDispatch()
 
-    const deleteProduct = async id => {
+    const deleteItem = async id => {
         const res = await axios.delete(`products/${id}`)
-        console.log(res)
+        if (res.status == 200) {
+            handleDeleteModal()
+            dispatch(getProducts())
+            alert(`${item.title} با موفقیت حذف شد`)
+        }
     }
 
     return (
@@ -19,12 +25,12 @@ export const DeleteModal = ({ handleDeleteModal, product }) => {
                     >
                         <div className='bg-white p-8'>
                             <div className='mb-6'>
-                                <h1 className=''>از حذف این مورد اطمینان دارید ؟</h1>
-                                <p>{product.title}</p>
+                                <h1 className=''>از حذف {item.title} اطمینان دارید ؟</h1>
+                                <p></p>
                             </div>
                             <div>
                                 <Button className='bg-gray-700 text-red-400 '
-                                    onClick={()=>deleteProduct(product.id)} >
+                                    onClick={() => deleteItem(item.id)} >
                                     تایید
                                 </Button>
 

@@ -5,10 +5,11 @@ export { SideBar } from './components/SideBar'
 export { ErrorMsg } from './components/ErrorMsg'
 export { DeleteModal } from './components/modal/DeleteModal'
 export { DetailModal } from './components/modal/DetailModal'
+export { EditModal } from './components/modal/EditModal'
 export { ProductsList } from './components/ProductsList'
 export { UsersList } from './components/UsersList'
 export { AddNewItem } from './components/AddNewItem'
- // pages
+// pages
 export { Users } from './pages/Users'
 export { Orders } from './pages/Orders'
 export { Products } from './pages/Products'
@@ -24,4 +25,4 @@ export { getProducts } from './redux/actions/productsAction'
 export { getUsers } from './redux/actions/usersAction'
 export { usersReducer } from './redux/reducers/usersReducer'
 // custom hook
-export {useInput} from './hooks/useInput'
+export { useInput } from './hooks/useInput'

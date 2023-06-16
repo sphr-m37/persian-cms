@@ -2,41 +2,45 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '../../index'
 
-export const DetailModal = ({ handleClose }) => {
+export const DetailModal = ({ handleDetailModal, item }) => {
     return (
         <div> <div>
             {
                 createPortal(
                     <div className=' w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[#1e13137b] px-2'
                     >
-                        <div className='bg-white p-2 text-sm'>
+                        <div className='bg-white p-2 text-sm min-w-[300px] max-w-md'>
                             <div className='mb-6'>
-                                <h1 className='mb-4 text-center'> جزئیات </h1>
-                                <table className="table-auto w-full">
+                                <h1 className='mb-4 text-center'>
+                                    <span>
+                                        جزئیات {item.title}
+                                    </span>
+                                </h1>
+                                <table id="table">
                                     <thead>
                                         <tr className='text-right'>
-                                            <th>تصویر</th>
-                                            <th>عنوان</th>
-                                            <th>قیمت</th>
-                                            <th>موجودی</th>
+                                            <th>محبوبیت</th>
+                                            <th>فروش</th>
+                                            <th>  تعداد رنگ</th>
                                         </tr>
                                     </thead>
                                     <tbody className=''>
                                         <tr className='cursor-pointer'>
                                             <td >
-                                                <img src='' alt='' />
+                                                {item.popularity}
                                             </td>
-                                            <td>آموزش ری اکت</td>
-                                            <td>4,000,000</td>
-                                            <td className='text-center'>9</td>
-                                     
+                                            <td>{item.sale}</td>
+                                            <td>{item.colors}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <p>
+                                {item.productDesc}
+                            </p>
                             <div>
                                 <Button className='bg-gray-700 text-green-400 '
-                                    onClick={handleClose} >
+                                    onClick={handleDetailModal} >
                                     بستن
                                 </Button>
                             </div>
