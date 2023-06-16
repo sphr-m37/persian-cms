@@ -27,6 +27,11 @@ export const UsersList = () => {
         handleDeleteModal()
     }
 
+    const showDetailHandle = (user) => {
+        setCurrentUser(user)
+        handleDetailModal()
+    }
+
     return (
         <div>
             {users.length < 1 ? <ErrorMsg title={'NO PTODUCT FOUND'} /> :
@@ -35,35 +40,35 @@ export const UsersList = () => {
                         <tr>
                             <th>نام</th>
                             <th>نام خانوادگی</th>
-                            <th>ایمیل</th>
                             <th>شماره تماس</th>
                             <th>امتیاز</th>
-                            <th>نام کاربری</th>
-                            <th>گذرواژه</th>
                             <th>گزینه ها</th>
                         </tr>
                         {users.map(user => <tr key={user?.id}>
-                            <td>{user?.firsname}</td>
+                            <td>{user?.firstname}</td>
                             <td>{user?.lastname}</td>
-                            <td>{user?.email}</td>
                             <td>{user?.phone}</td>
                             <td >{user?.score}</td>
-                            <td >{user?.username}</td>
-                            <td>{user?.password}</td>
                             <td className='flex justify-center'>
-                                <Button className='text-red-600 hover:opacity-80' onClick={() => deleteUser(user)}  >حذف</Button>
-                                <Button className='text-yellow-600 hover:opacity-80 '>ویرایش</Button>
-                                <Button className='text-blue-600 hover:opacity-80'>جزئیات</Button>
+                                <Button className='text-red-600 hover:opacity-80' onClick={() => deleteUser(user)}>حذف</Button>
+                                <Button className='text-yellow-600 hover:opacity-80'>ویرایش</Button>
+                                <Button className='text-blue-600 hover:opacity-80'
+                                    onClick={() => showDetailHandle(user)}
+                                >جزئیات</Button>
                             </td>
                         </tr>)}
                     </table>
 
 
-                    {showِDeleteModal && <DeleteModal user={currentUser}  getUsers={getUsers}
+                    {showِDeleteModal && <DeleteModal user={currentUser} getUsers={getUsers}
                         handleDeleteModal={handleDeleteModal} />}
-                    {showِDetailModal && <DetailModal
+
+                    {showِDetailModal && <DetailModal user={currentUser}
                         handleDetailModal={handleDetailModal} />}
-                </div >}
+                    
+                    
+                </div >
+            }
         </div>
     )
 }
