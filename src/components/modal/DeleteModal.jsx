@@ -13,7 +13,7 @@ export const DeleteModal = ({ handleDeleteModal, getProducts, product, user, get
         if (res.status == 200) {
             handleDeleteModal()
             dispatch(product ? getProducts() : getUsers())
-            alert(`${product ? product.title : user.firsname} با موفقیت حذف شد`)
+            alert(`${product ? product.title : user.firstname} با موفقیت حذف شد`)
         }
     }
 
@@ -26,7 +26,7 @@ export const DeleteModal = ({ handleDeleteModal, getProducts, product, user, get
                         <div className='bg-white p-8'>
                             <div className='mb-6'>
                                 <h1 className=''>
-                                    {product ? product.title : user.firsname} حذف شود؟
+                                    {product ? product.title : user.firstname} حذف شود؟
                                 </h1>
                                 <p></p>
                             </div>

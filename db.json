@@ -62,7 +62,7 @@
   "users": [
     {
       "id": 1,
-      "firsname": "علیرضا",
+      "firstname": "علیرضا",
       "lastname": "احمدی",
       "username": "alireza_ahmdi19",
       "password": "19901432",
@@ -75,7 +75,7 @@
     },
     {
       "id": 2,
-      "firsname": "حسین",
+      "firstname": "حسین",
       "lastname": "محمدی",
       "username": "hosyn_mmdi",
       "password": "ho3ein_12",
@@ -88,7 +88,7 @@
     },
     {
       "id": 3,
-      "firsname": "علی",
+      "firstname": "علی",
       "lastname": "حسینی",
       "username": "ali_9001",
       "password": "ali190012",
