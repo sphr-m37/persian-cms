@@ -23,8 +23,6 @@ export const EditModal = ({ handleEditModal, item }) => {
     const [colors, colorsBind, colorsReset] = useInput(item.colors)
     const [productDesc, productDescBind, productDescReset] = useInput(item.productDesc)
 
-    console.log(title)
-
     const editItem = async () => {
         const editedProduct = {
             title,

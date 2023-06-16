@@ -4,16 +4,29 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../index'
 // comments
 import { ErrorMsg, Button, DeleteModal, DetailModal } from '../index'
+import { useState } from 'react'
 
 
 export const UsersList = () => {
+
 
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getUsers())
     }, [])
-
     const { users } = useSelector(state => state.users)
+
+    const [currentUser, setCurrentUser] = useState({})
+    const [showِDeleteModal, setShowِDeleteModal] = useState(false)
+    const [showِDetailModal, setShowِDetailModal] = useState(false)
+    const handleDeleteModal = () => setShowِDeleteModal(prev => !prev)
+    const handleDetailModal = () => setShowِDetailModal(prev => !prev)
+
+    const deleteUser = (user) => {
+        setCurrentUser(user)
+        handleDeleteModal()
+    }
+
     return (
         <div>
             {users.length < 1 ? <ErrorMsg title={'NO PTODUCT FOUND'} /> :
@@ -38,17 +51,18 @@ export const UsersList = () => {
                             <td >{user?.username}</td>
                             <td>{user?.password}</td>
                             <td className='flex justify-center'>
-                                <Button className='text-red-600 hover:opacity-80' >حذف</Button>
+                                <Button className='text-red-600 hover:opacity-80' onClick={() => deleteUser(user)}  >حذف</Button>
                                 <Button className='text-yellow-600 hover:opacity-80 '>ویرایش</Button>
                                 <Button className='text-blue-600 hover:opacity-80'>جزئیات</Button>
                             </td>
                         </tr>)}
                     </table>
 
-                    {/* {showِDeleteModal && <DeleteModal
-                    handleClose={handleDeleteModal} />}
-                {showِDetailModal && <DetailModal
-                    handleClose={handleDetailModal} />} */}
+
+                    {showِDeleteModal && <DeleteModal user={currentUser}  getUsers={getUsers}
+                        handleDeleteModal={handleDeleteModal} />}
+                    {showِDetailModal && <DetailModal
+                        handleDetailModal={handleDetailModal} />}
                 </div >}
         </div>
     )

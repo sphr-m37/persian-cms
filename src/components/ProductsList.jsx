@@ -69,7 +69,7 @@ export const ProductsList = () => {
             <ErrorMsg title={'NO PRODUCT FOUND'} />
         }
         {
-            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} item={currentProduct} getProducts={getProducts} />
+            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} product={currentProduct}  getProducts={getProducts} />
         }
         {
             showِDetailModal && <DetailModal handleDetailModal={handleDetailModal} item={currentProduct} />
