@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 
-export const EditModal = ({ handleEditModal, editeProduct, children }) => {
+export const EditModal = ({ handleEditModal, edit, children }) => {
 
     return (
         <div>
@@ -22,7 +22,7 @@ export const EditModal = ({ handleEditModal, editeProduct, children }) => {
                                     بستن
                                 </Button>
                                 <Button className='bg-gray-700 text-green-400 '
-                                    onClick={editeProduct} >
+                                    onClick={edit} >
                                     ثبت
                                 </Button>
                             </div>

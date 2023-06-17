@@ -54,11 +54,11 @@ export const ProductsList = () => {
     const [productDesc, productDescBind, productDescReset] = useInput(currentProduct.productDesc)
 
 
-    const editeModalHandle = product => {
+    const editModalHandle = product => {
         setCurrentProduct(product)
         handleEditModal()
     }
-    const editeProduct = async () => {
+    const editProduct = async () => {
         const editedProduct = {
             title,
             img,
@@ -99,7 +99,7 @@ export const ProductsList = () => {
                     <td>
                         <Button className='text-red-600 hover:opacity-80' onClick={() => deleteProduct(product)}>حذف</Button>
                         <Button className='text-yellow-600 hover:opacity-80'
-                            onClick={() => editeModalHandle(product)}
+                            onClick={() => editModalHandle(product)}
                         >ویرایش</Button>
                         <Button className='text-blue-600 hover:opacity-80'
                             onClick={() => showDetailHandle(product)}>جزئیات</Button>
@@ -117,14 +117,14 @@ export const ProductsList = () => {
             showِDetailModal && <DetailModal handleDetailModal={handleDetailModal} product={currentProduct} />
         }
         {
-            showِEditlModal && <EditModal handleEditModal={handleEditModal} item={currentProduct} editeProduct={editeProduct}>
+            showِEditlModal && <EditModal handleEditModal={handleEditModal} edit={editProduct}>
                 <div className='mb-6'>
                     <h1 className='mb-4 text-center'>
                         <span>
                             ویرایش {currentProduct.title}
                         </span>
                     </h1>
-                    <form className='w-full' onSubmit={editeProduct}>
+                    <form className='w-full' onSubmit={editProduct}>
 
                         <div className={formGroupStyel}>
                             <span>عنوان :</span>
