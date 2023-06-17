@@ -5,6 +5,11 @@ import { ErrorMsg, ProductsList, AddNewItem, Button, getProducts } from '../inde
 import { useInput } from '../hooks/useInput'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+
+// toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -24,6 +29,9 @@ export const Products = () => {
   const [colors, colorsBind, colorsReset] = useInput('')
   const [productDesc, productDescBind, productDescReset] = useInput('')
 
+  const notif = (msg) => toast(msg)
+
+
   const submitHandler = async e => {
     e.preventDefault()
     const newProduct = {
@@ -38,7 +46,7 @@ export const Products = () => {
     }
     const res = await axios.post('products', newProduct)
     if (res.status == 201) {
-      alert(`${title} با موفقیت افزوده شد`)
+      notif(`${title} با موفقیت افزوده شد`)
       dispatch(getProducts())
       imgReset()
       titleReset()

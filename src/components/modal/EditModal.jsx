@@ -1,8 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { Button, getProducts, useInput } from '../../index'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
+import { Button } from '../../index'
+
 
 
 

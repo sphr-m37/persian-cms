@@ -6,7 +6,9 @@ import { EditModal, getUsers, useInput } from '../index'
 import { ErrorMsg, Button, DeleteModal, DetailModal } from '../index'
 import { useState } from 'react'
 import axios from 'axios'
-
+// toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -42,7 +44,7 @@ export const UsersList = () => {
     const [address, addressBind, resetAddress] = useInput(currentUser.address)
     const [score, scoreBind, resetScore] = useInput(currentUser.score)
     const [buy, buyBind, resetBuy] = useInput(currentUser.buy)
-
+    const notif = (msg) => toast(msg)
     const deleteUser = (user) => {
         setCurrentUser(user)
         handleDeleteModal()
@@ -56,6 +58,7 @@ export const UsersList = () => {
         setShowEditlModal(prev => !prev)
         setCurrentUser(user)
     }
+
 
     const editUser = async () => {
         const editedUser = {
@@ -72,7 +75,7 @@ export const UsersList = () => {
         }
         const res = await axios.patch(`users/${currentUser.id}`, editedUser)
         if (res.status == 200) {
-            alert(`${currentUser.firstname} با موفقیت ویرایش شد`)
+            notif(`${editedUser.firstname} با موفقیت ویرایش شد`)
             handleEditModal()
             dispatch(getUsers())
         }

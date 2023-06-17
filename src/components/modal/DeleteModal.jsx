@@ -4,7 +4,13 @@ import { createPortal } from 'react-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
+// toastify 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const DeleteModal = ({ handleDeleteModal, getProducts, product, user, getUsers }) => {
+
+    const notif = (msg) => toast(msg)
 
     const dispatch = useDispatch()
 
@@ -13,7 +19,7 @@ export const DeleteModal = ({ handleDeleteModal, getProducts, product, user, get
         if (res.status == 200) {
             handleDeleteModal()
             dispatch(product ? getProducts() : getUsers())
-            alert(`${product ? product.title : user.firstname} با موفقیت حذف شد`)
+            notif(`${product ? product.title : user.firstname} با موفقیت حذف شد`)
         }
     }
 
@@ -42,10 +48,12 @@ export const DeleteModal = ({ handleDeleteModal, getProducts, product, user, get
                                 </Button>
                             </div>
                         </div>
-                    </div >,
+                    </div >
+                    ,
                     document.getElementById('modal')
                 )
             }
+   
         </div>
     )
 }

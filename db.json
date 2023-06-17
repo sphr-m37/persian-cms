@@ -8,7 +8,7 @@
   "products": [
     {
       "id": 2,
-      "title": "هندزفری بی سیم",
+      "title": "هندزفری باسیم",
       "price": "100",
       "count": "10",
       "img": "/img/head.jpeg",
@@ -21,7 +21,7 @@
     },
     {
       "id": 3,
-      "title": "تیشرت مشکی",
+      "title": "تیشرت red",
       "price": 290000,
       "count": 129,
       "img": "/img/tshirt.jpeg",
@@ -62,7 +62,7 @@
   "users": [
     {
       "id": 1,
-      "firstname": "رضا",
+      "firstname": "رضا 12",
       "lastname": "احمدی",
       "username": "alireza_ahmdi19",
       "password": "19901432",

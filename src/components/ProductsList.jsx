@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../index'
 // costum hook
 import { useInput } from '../hooks/useInput'
-import { set } from 'react-hook-form'
+// toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // tailwind css classes
 const inputstyle = `
@@ -28,6 +30,7 @@ export const ProductsList = () => {
     const handleDeleteModal = () => setShowDeleteModal(prev => !prev)
     const handleDetailModal = () => setShowDetailModal(prev => !prev)
     const handleEditModal = () => setShowEditlModal(prev => !prev)
+    const notif = (msg) => toast(msg)
 
     useEffect(() => {
         dispatch(getProducts())
@@ -71,7 +74,7 @@ export const ProductsList = () => {
         }
         const res = await axios.patch(`products/${currentProduct.id}`, editedProduct)
         if (res.status == 200) {
-            alert(`${currentProduct.title} با موفقیت ویرایش شد `)
+            notif(`${editedProduct.title} با موفقیت ویرایش شد `)
             dispatch(getProducts())
             handleEditModal()
         }
@@ -173,6 +176,7 @@ export const ProductsList = () => {
                 </div>
             </EditModal>
         }
+        <ToastContainer />
     </>
 
     )

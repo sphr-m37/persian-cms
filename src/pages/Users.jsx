@@ -4,6 +4,11 @@ import React, { useState } from 'react'
 import { AddNewItem, Button, UsersList, getUsers, useInput } from '../index'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+
+// toastify 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -13,6 +18,8 @@ const formGroupStyel = `
 //  //
 
 export const Users = () => {
+
+    const notif = (msg) => toast(msg)
     const dispatch = useDispatch()
     const [currentUser, setCurrentUser] = useState({})
 
@@ -36,13 +43,12 @@ export const Users = () => {
             phone,
             city,
             email,
-            address,
             score,
             buy,
         }
         const res = await axios.post('users', newUser)
         if (res.status == 201) {
-            alert(`${newUser.firstname} با موفقیت افزوده شد`)
+            notif(`${newUser.firstname} با موفقیت افزوده شد`)
             dispatch(getUsers())
             resetFirstname()
             resetLastName()
@@ -128,6 +134,7 @@ export const Users = () => {
                 </form>
             </AddNewItem>
             <UsersList />
+            <ToastContainer />
         </>
     )
 }
