@@ -13,16 +13,19 @@ export { AddNewItem } from './components/AddNewItem'
 export { Users } from './pages/Users'
 export { Orders } from './pages/Orders'
 export { Products } from './pages/Products'
-export { Comments } from './pages/Comments'
 export { NotFound } from './pages/NotFound'
 export { Discounts } from './pages/Discounts'
+export { Comments } from './pages/Comments'
 // routs
 export { routes } from './routing/routes'
 // redux
 export { store } from './redux/store'
-export { productsReducer } from './redux/reducers/productsReducer'
 export { getProducts } from './redux/actions/productsAction'
 export { getUsers } from './redux/actions/usersAction'
+export { getComments } from './redux/actions/commentsAction'
+
+export { productsReducer } from './redux/reducers/productsReducer'
 export { usersReducer } from './redux/reducers/usersReducer'
+export { commentsReducer } from './redux/reducers/commentReducer'
 // custom hook
 export { useInput } from './hooks/useInput'

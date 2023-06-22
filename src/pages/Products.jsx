@@ -1,15 +1,12 @@
 import React from 'react'
 // components
-import { ErrorMsg, ProductsList, AddNewItem, Button, getProducts } from '../index'
-
+import { ProductsList, AddNewItem, Button, getProducts } from '../index'
 import { useInput } from '../hooks/useInput'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-
 // toastify 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -17,7 +14,6 @@ const formGroupStyel = `
   border-b w-[80%] mx-auto md:w-[48%] md:mx-[1%] lg:w-[31%] p-1
 `
 //  //
-
 export const Products = () => {
   const dispatch = useDispatch()
   const [img, imgBind, imgReset] = useInput('')
@@ -28,10 +24,7 @@ export const Products = () => {
   const [sale, saleBind, saleReset] = useInput('')
   const [colors, colorsBind, colorsReset] = useInput('')
   const [productDesc, productDescBind, productDescReset] = useInput('')
-
   const notif = (msg) => toast(msg)
-
-
   const submitHandler = async e => {
     e.preventDefault()
     const newProduct = {
@@ -62,44 +55,36 @@ export const Products = () => {
     <>
       <AddNewItem text={'افزودن محصول'} >
         <form className='w-full flex flex-wrap'>
-
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='عنوان'
               className={inputstyle}
               {...titleBind} />
           </div>
-
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='قیمت'
               className={inputstyle}
               {...priceBind} />
           </div>
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='محبوبیت'
               className={inputstyle}
               {...popularityBind} />
           </div>
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='امتیاز'
               className={inputstyle}
               {...countBind} />
           </div>
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='فروش'
               className={inputstyle}
               {...saleBind} />
           </div>
-
           <div className={formGroupStyel}>
             <input type="text"
               placeholder='تعداد رنگ بندی'
@@ -112,11 +97,9 @@ export const Products = () => {
               className={inputstyle}
               {...imgBind} />
           </div>
-
           <div className={formGroupStyel}>
             <textarea {...productDescBind} className={`${inputstyle} resize-none`} maxLength={150} placeholder='توضیحات محصول' />
           </div>
-
           <div className='w-full mt-2'>
             <Button onClick={submitHandler} className='block mr-auto'>
               افزودن

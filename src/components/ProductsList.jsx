@@ -11,7 +11,6 @@ import { useInput } from '../hooks/useInput'
 // toastify 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -19,10 +18,13 @@ const formGroupStyel = `
   border-b w-[80%] mx-auto  p-1
 `
 //  //
-
 export const ProductsList = () => {
     const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getProducts())
+    }, [])
     const { products } = useSelector(state => state.products)
+    const reversedProducts = [...products].reverse()
     const [currentProduct, setCurrentProduct] = useState({})
     const [showِDeleteModal, setShowDeleteModal] = useState(false)
     const [showِDetailModal, setShowDetailModal] = useState(false)
@@ -32,21 +34,19 @@ export const ProductsList = () => {
     const handleEditModal = () => setShowEditlModal(prev => !prev)
     const notif = (msg) => toast(msg)
 
-    useEffect(() => {
-        dispatch(getProducts())
-    }, [])
+    const deleteProduct = async () => {
+        const res = await axios.delete(`products/${currentProduct.id}`)
+        if (res.status == 200) {
+            dispatch(getProducts())
+            handleDeleteModal()
+            notif(`${currentProduct.title} با موفقیت حذف شد`)
 
-    const deleteProduct = (product) => {
-        setCurrentProduct(product)
-        handleDeleteModal()
+        }
     }
-
-
     const showDetailHandle = (product) => {
         setCurrentProduct(product)
         handleDetailModal()
     }
-
     const [title, titleBind, titleReset] = useInput(currentProduct.title)
     const [img, imgBind, imgReset] = useInput(currentProduct.img)
     const [price, priceBind, priceReset] = useInput(currentProduct.price)
@@ -55,7 +55,6 @@ export const ProductsList = () => {
     const [sale, saleBind, saleReset] = useInput(currentProduct.sale)
     const [colors, colorsBind, colorsReset] = useInput(currentProduct.colors)
     const [productDesc, productDescBind, productDescReset] = useInput(currentProduct.productDesc)
-
 
     const editModalHandle = product => {
         setCurrentProduct(product)
@@ -79,11 +78,8 @@ export const ProductsList = () => {
             handleEditModal()
         }
     }
-
-
-
     return (<>
-        {products.length > 0 ? <div className='my-2'>
+        {products.length ? <div className='my-2'>
             <table id="table">
                 <tr>
                     <th>تصویر</th>
@@ -92,7 +88,7 @@ export const ProductsList = () => {
                     <th>موجودی</th>
                     <th>گزینه ها</th>
                 </tr>
-                {products.map(product => <tr key={product.id} className='cursor-pointer'>
+                {reversedProducts.map(product => <tr key={product.id} className='cursor-pointer'>
                     <td >
                         <img className=' w-[60px] h-[60px] mx-auto my-auto' src={product.img} alt="" />
                     </td>
@@ -100,7 +96,10 @@ export const ProductsList = () => {
                     <td>{product.price}</td>
                     <td>{product.count}</td>
                     <td>
-                        <Button className='text-red-600 hover:opacity-80' onClick={() => deleteProduct(product)}>حذف</Button>
+                        <Button className='text-red-600 hover:opacity-80' onClick={() => {
+                            setCurrentProduct(product)
+                            handleDeleteModal()
+                        }}>حذف</Button>
                         <Button className='text-yellow-600 hover:opacity-80'
                             onClick={() => editModalHandle(product)}
                         >ویرایش</Button>
@@ -114,10 +113,32 @@ export const ProductsList = () => {
             <ErrorMsg title={'NO PRODUCT FOUND'} />
         }
         {
-            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} product={currentProduct} getProducts={getProducts} />
+            showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} title={`${currentProduct.title} `} deleteMethod={deleteProduct} />
         }
         {
-            showِDetailModal && <DetailModal handleDetailModal={handleDetailModal} product={currentProduct} />
+            showِDetailModal && <DetailModal handleDetailModal={handleDetailModal} title={currentProduct.title} >
+                <table id='table'>
+                    <thead>
+                        <th>
+                            محبوبیت
+                        </th>
+                        <th>
+                            میزان فروش
+                        </th>
+                        <th>
+                            تعداد رنگ بندی
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{currentProduct.popularity}</td>
+                            <td>{currentProduct.sale}</td>
+                            <td>{currentProduct.colors}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p className='mt-5'>{currentProduct.productDesc}</p>
+            </DetailModal>
         }
         {
             showِEditlModal && <EditModal handleEditModal={handleEditModal} edit={editProduct}>
@@ -174,10 +195,8 @@ export const ProductsList = () => {
                         </div>
                     </form>
                 </div>
-            </EditModal>
-        }
+            </EditModal>}
         <ToastContainer />
     </>
-
     )
 }
