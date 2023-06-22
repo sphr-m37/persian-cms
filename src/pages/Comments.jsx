@@ -24,6 +24,14 @@ export const Comments = () => {
       notif('کامنت با موفقیت تایید شد')
     }
   }
+  const rejectComment = async () => {
+    const res = await axios.patch(`comments/${currentComment.id}`, { isAccept: 0 })
+    if (res.status == 200) {
+      handleDetailModal()
+      dispatch(getComments())
+      notif('کامنت با موفقیت رد شد')
+    }
+  }
   const deleteComment = async () => {
     const res = await axios.delete(`comments/${currentComment.id}`)
     if (res.status == 200) {
@@ -61,7 +69,7 @@ export const Comments = () => {
                   setShowDetailModal(true)
                   setCurrentComment(comment)
                 }}
-              >خواندن {!comment?.isAccept && " و تایید"}</Button>
+              >خواندن {comment?.isAccept ? " / رد کردن " : " / تایید"}</Button>
             </td>
           </tr>)}
         </table>
@@ -69,6 +77,7 @@ export const Comments = () => {
       {showDetailModal && <DetailModal comment={currentComment}
         handleDetailModal={handleDetailModal}
         confirmComment={confirmComment}
+        rejectComment={rejectComment}
         title='کامنت'>
         <p>
           {currentComment?.body}

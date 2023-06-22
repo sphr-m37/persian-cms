@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { Button } from '../../index'
 
 export const DetailModal = ({ title, children,
-    handleDetailModal, comment, confirmComment
+    handleDetailModal, comment, confirmComment, rejectComment
 }) => {
     return (
         <div> <div>
@@ -21,7 +21,9 @@ export const DetailModal = ({ title, children,
 
                             {comment &&
                                 <>
-                                {!comment.isAccept &&
+                                {comment.isAccept ? <Button onClick={rejectComment}>
+                                    رد کردن
+                                </Button> :
                                     <Button onClick={confirmComment}>
                                         تایید
                                     </Button>}
