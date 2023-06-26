@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // components
 import { ProductsList, AddNewItem, Button, getProducts } from '../index'
 import { useInput } from '../hooks/useInput'
@@ -24,8 +24,10 @@ export const Products = () => {
   const [sale, saleBind, saleReset] = useInput('')
   const [colors, colorsBind, colorsReset] = useInput('')
   const [productDesc, productDescBind, productDescReset] = useInput('')
+  const [openForm, setOpenForm] = useState(false)
+
   const notif = (msg) => toast(msg)
-  const submitHandler = async e => {
+  const addNewProduct = async e => {
     e.preventDefault()
     const newProduct = {
       title,
@@ -49,11 +51,13 @@ export const Products = () => {
       saleReset()
       colorsReset()
       productDescReset()
+      setOpenForm(false)
     }
   }
   return (
     <>
-      <AddNewItem text={'افزودن محصول'} >
+      <AddNewItem title={'افزودن محصول'} openForm={openForm}
+        setOpenForm={setOpenForm} >
         <form className='w-full flex flex-wrap'>
           <div className={formGroupStyel}>
             <input type="text"
@@ -101,7 +105,7 @@ export const Products = () => {
             <textarea {...productDescBind} className={`${inputstyle} resize-none`} maxLength={150} placeholder='توضیحات محصول' />
           </div>
           <div className='w-full mt-2'>
-            <Button onClick={submitHandler} className='block mr-auto'>
+            <Button onClick={addNewProduct} className='block mr-auto'>
               افزودن
             </Button>
           </div>

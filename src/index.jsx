@@ -23,9 +23,13 @@ export { store } from './redux/store'
 export { getProducts } from './redux/actions/productsAction'
 export { getUsers } from './redux/actions/usersAction'
 export { getComments } from './redux/actions/commentsAction'
+export { getOrders } from './redux/actions/orderAction'
+export { getDiscounts } from './redux/actions/discountAction'
 
 export { productsReducer } from './redux/reducers/productsReducer'
 export { usersReducer } from './redux/reducers/usersReducer'
 export { commentsReducer } from './redux/reducers/commentReducer'
+export { orderReducer } from './redux/reducers/orderReducer'
+export { discountReducer } from './redux/reducers/discountReducer'
 // custom hook
 export { useInput } from './hooks/useInput'

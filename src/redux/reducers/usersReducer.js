@@ -1,7 +1,8 @@
-import { GET_USERS } from "../actions/Types"
+import { GET_USERS } from "../Types"
 
 const init = {
-    users: []
+    users: [],
+    loading: false
 }
 
 export const usersReducer = (state = init, action) => {

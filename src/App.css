@@ -7,8 +7,14 @@ body {
   direction: rtl;
   background-color: gray;
   font-family: iranyekan;
-
 }
+
+
+::-webkit-scrollbar {
+  background: rgb(119, 118, 118);
+  width: 3px;
+}
+
 
 #table {
   border-collapse: collapse;
@@ -39,6 +45,6 @@ body {
 
 #table th {
   text-align: left;
-  background-color: #04AA6D;
+  background-color: #b7b8b8;
   color: white;
 }

@@ -1,20 +1,15 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-
+import React, { useState,useEffect } from 'react'
 export const useInput = (init) => {
-
     useEffect(() => {
        setValue(init) 
     },[init])
-
     const [value, setValue] = useState(init)
     const reset = () => {
-        setValue('')
+        setValue(init)
     }
     const binding = {
         value: value,
         onChange: e => setValue(e.target.value)
     }
-
     return [value, binding, reset]
 }

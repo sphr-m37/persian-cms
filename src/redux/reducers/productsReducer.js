@@ -1,7 +1,8 @@
-import { GET_PRODUCTS } from "../actions/Types"
+import { GET_PRODUCTS } from "../Types"
 
 const init = {
-    products: []
+    products: [],
+    loading: false
 }
 
 export const productsReducer = (state = init, action) => {

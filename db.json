@@ -83,21 +83,8 @@
       "city": "تبریز",
       "email": "ho3ein@gmail.com",
       "address": "تبریز - خیابان فلان - کوچه فلان",
-      "score": 31,
+      "score": "21",
       "buy": 12000000
-    },
-    {
-      "id": 3,
-      "firstname": "علی",
-      "lastname": "حسینی",
-      "username": "ali_9001",
-      "password": "ali190012",
-      "phone": 9943287617,
-      "city": "شیراز",
-      "email": "ali@gmail.com",
-      "address": "شیراز - خیابان فلان - کوچه فلان",
-      "score": 28,
-      "buy": 8541000
     }
   ],
   "comments": [
@@ -130,5 +117,5 @@
     }
   ],
   "orders": [],
-  "offs": []
-} 
+  "discounts": []
+}

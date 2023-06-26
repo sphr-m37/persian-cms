@@ -1,9 +1,10 @@
 import React from 'react'
-import { GET_COMMENTS } from '../actions/Types'
+import { GET_COMMENTS } from '../Types'
 
 
 const init = {
-    comments: []
+    comments: [],
+    loading: false
 }
 
 

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Button, DeleteModal, DetailModal, ErrorMsg, getComments } from '../index'
+// components
+import { Button, DeleteModal, DetailModal, ErrorMsg } from '../index'
+// redux
 import { useDispatch, useSelector } from 'react-redux'
+import { getComments } from '../index'
+// axios
 import axios from 'axios'
+// toastify
 import { toast, ToastContainer } from 'react-toastify'
-
 export const Comments = () => {
-  const { comments } = useSelector(state => state.comments)
+  let { comments } = useSelector(state => state.comments)
+  comments = comments.reverse()
   const dispatch = useDispatch()
   const notif = (msg) => toast(msg)
   useEffect(() => {
@@ -73,7 +78,7 @@ export const Comments = () => {
             </td>
           </tr>)}
         </table>
-      </div> : <ErrorMsg title='no comment found' />}
+      </div> : <ErrorMsg title='کانتی موجود نیست' />}
       {showDetailModal && <DetailModal comment={currentComment}
         handleDetailModal={handleDetailModal}
         confirmComment={confirmComment}

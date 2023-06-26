@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { EditModal, getUsers, useInput } from '../index'
-// comments
-import { ErrorMsg, Button, DeleteModal, DetailModal } from '../index'
-import { useState } from 'react'
+import { getUsers } from '../index'
+import {ErrorMsg, Button, DeleteModal, EditModal,DetailModal, useInput
+} from '../index'
+// axios
 import axios from 'axios'
-// toastify 
+// toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // tailwind css classes
@@ -21,7 +21,8 @@ export const UsersList = () => {
     useEffect(() => {
         dispatch(getUsers())
     }, [])
-    const { users } = useSelector(state => state.users)
+    let { users } = useSelector(state => state.users)
+    users = [...users].reverse()
     const [currentUser, setCurrentUser] = useState({})
     const [showِDeleteModal, setShowِDeleteModal] = useState(false)
     const [showِDetailModal, setShowِDetailModal] = useState(false)
@@ -104,9 +105,7 @@ export const UsersList = () => {
                     </tr>)}
                 </table>
                 {showِDeleteModal && <DeleteModal title={currentUser.firstname}
-                    handleDeleteModal={handleDeleteModal} deleteMethod={deleteUser} />
-                }
-
+                    handleDeleteModal={handleDeleteModal} deleteMethod={deleteUser} />}
                 {showِDetailModal && <DetailModal user={currentUser}
                     handleDetailModal={handleDetailModal}>
                     <table id='table'>
@@ -138,82 +137,80 @@ export const UsersList = () => {
                         </tbody>
                     </table>
                 </DetailModal>}
-                {
-                    showِEditlModal && <EditModal user={currentUser} handleEditModal={handleEditModal} edit={editUser}
-                    >
-                        <div className='mb-6'>
-                            <h1 className='mb-4 text-center'>
-                                <span>
-                                    ویرایش {currentUser.firstname}
-                                </span>
-                            </h1>
-                            <form className='w-full' >
-                                <div className={formGroupStyel}>
-                                    <span>نام :</span>
-                                    <input className={inputstyle}
-                                        {...firstnameBind}
-                                        type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span>نام خانوداگی :</span>
-                                    <input className={inputstyle}
-                                        {...lastNameBind} type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span>نام کاربری :</span>
-                                    <input className={inputstyle}
-                                        {...usernameBind}
-                                        type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span> گذرواژه :</span>
-                                    <input className={inputstyle}
-                                        {...passwordBind}
+                {showِEditlModal && <EditModal user={currentUser} handleEditModal={handleEditModal} edit={editUser}
+                >
+                    <div className='mb-6'>
+                        <h1 className='mb-4 text-center'>
+                            <span>
+                                ویرایش {currentUser.firstname}
+                            </span>
+                        </h1>
+                        <form className='w-full' >
+                            <div className={formGroupStyel}>
+                                <span>نام :</span>
+                                <input className={inputstyle}
+                                    {...firstnameBind}
+                                    type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span>نام خانوداگی :</span>
+                                <input className={inputstyle}
+                                    {...lastNameBind} type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span>نام کاربری :</span>
+                                <input className={inputstyle}
+                                    {...usernameBind}
+                                    type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span> گذرواژه :</span>
+                                <input className={inputstyle}
+                                    {...passwordBind}
 
-                                        type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span>ایمیل :</span>
-                                    <input className={inputstyle}
-                                        {...emailBind}
+                                    type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span>ایمیل :</span>
+                                <input className={inputstyle}
+                                    {...emailBind}
 
-                                        type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span>شماره تماس  :</span>
-                                    <input className={inputstyle}
-                                        {...phoneBind}
+                                    type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span>شماره تماس  :</span>
+                                <input className={inputstyle}
+                                    {...phoneBind}
 
-                                        type="text" />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span> شهر :</span>
-                                    <input className={inputstyle}
-                                        {...cityBind}
-                                        type="text"
-                                    />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span>مجموع خرید :</span>
-                                    <input className={inputstyle}
-                                        {...buyBind}
-                                        type="text"
-                                    />
-                                </div>
-                                <div className={formGroupStyel}>
-                                    <span> امتیاز :</span>
-                                    <input className={inputstyle}
-                                        {...scoreBind}
-                                        type="text"
-                                    />
-                                </div>
+                                    type="text" />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span> شهر :</span>
+                                <input className={inputstyle}
+                                    {...cityBind}
+                                    type="text"
+                                />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span>مجموع خرید :</span>
+                                <input className={inputstyle}
+                                    {...buyBind}
+                                    type="text"
+                                />
+                            </div>
+                            <div className={formGroupStyel}>
+                                <span> امتیاز :</span>
+                                <input className={inputstyle}
+                                    {...scoreBind}
+                                    type="text"
+                                />
+                            </div>
 
-                            </form>
-                        </div>
-                    </EditModal>
-                }
-            </div > : <ErrorMsg title={'NO PTODUCT FOUND'} />
-            }
+                        </form>
+                    </div>
+                </EditModal>}
+            </div > : <ErrorMsg title={'کاربری یافت نشد'} />}
+            <ToastContainer />
         </div>
     )
 }
