@@ -129,18 +129,6 @@
       "productID": "هندزفری بلوتوثی"
     }
   ],
-  "admins": [
-    {
-      "id": 1,
-      "fistname": "",
-      "lastname": "",
-      "username": "",
-      "password": "",
-      "task": "",
-      "token": "",
-      "img": ""
-    }
-  ],
   "orders": [],
   "offs": []
-}
+} 
