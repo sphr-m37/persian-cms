@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // tailwind css classes
 const inputstyle = `
-w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
+w-full h-full outline-none bg-transparent  placeholder:text-white placeholder:text-xs sm:placeholder:text-sm `
 const formGroupStyel = `
   border-b w-[80%] mx-auto  p-1
 `
@@ -78,30 +78,35 @@ export const ProductsList = () => {
     return (<>
         {products.length ? <div className='my-2'>
             <table id="table">
-                <tr>
-                    <th>تصویر</th>
-                    <th>عنوان</th>
-                    <th>قیمت</th>
-                    <th>موجودی</th>
-                    <th>گزینه ها</th>
-                </tr>
-                {products.map(product => <tr key={product.id} className='cursor-pointer'>
-                    <td >
-                        <img className=' w-[60px] h-[60px] mx-auto my-auto' src={product.img} alt="" />
-                    </td>
-                    <td>{product.title}</td>
-                    <td>{product.price}</td>
-                    <td>{product.count}</td>
-                    <td>
-                        <Button className='text-red-600 hover:opacity-80' onClick={() => {
-                            setCurrentProduct(product)
-                            handleDeleteModal()
-                        }}>حذف</Button>
-                        <Button className='text-yellow-600 hover:opacity-80' onClick={() => editModalHandle(product)}
-                        >ویرایش</Button>
-                        <Button className='text-blue-600 hover:opacity-80' onClick={() => showDetailHandle(product)}>جزئیات</Button>
-                    </td>
-                </tr>)}
+                <thead>
+                    <tr>
+                        <th>تصویر</th>
+                        <th>عنوان</th>
+                        <th>قیمت</th>
+                        <th>موجودی</th>
+                        <th>گزینه ها</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {products.map(product => <tr key={product.id} className='cursor-pointer'>
+                        <td >
+                            <img className=' w-[60px] h-[60px] mx-auto my-auto' src={product.img} alt="" />
+                        </td>
+                        <td>{product.title}</td>
+                        <td>{product.price}</td>
+                        <td>{product.count}</td>
+                        <td>
+                            <Button className='text-red-600 hover:opacity-80' onClick={() => {
+                                setCurrentProduct(product)
+                                handleDeleteModal()
+                            }}>حذف</Button>
+                            <Button className='text-yellow-600 hover:opacity-80' onClick={() => editModalHandle(product)}
+                            >ویرایش</Button>
+                            <Button className='text-blue-600 hover:opacity-80' onClick={() => showDetailHandle(product)}>جزئیات</Button>
+                        </td>
+                    </tr>)}
+                </tbody>
             </table>
         </div> : <ErrorMsg title={'محصولی یافت نشد'} />}
         {showِDeleteModal && <DeleteModal handleDeleteModal={handleDeleteModal} title={`${currentProduct.title} `} deleteMethod={deleteProduct} />}

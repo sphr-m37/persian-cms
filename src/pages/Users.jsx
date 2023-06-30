@@ -8,57 +8,50 @@ import axios from 'axios'
 // toastify 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useFormik } from 'formik';
+import * as yup from 'yup'
 // tailwind css classes
 const inputstyle = `
-w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
-const formGroupStyel = `
-  border-b w-[80%] mx-auto md:w-[48%] md:mx-[1%] lg:w-[31%] p-1
+w-full h-full outline-none bg-transparent placeholder:text-[#333] dark:placeholder:text-white placeholder:text-xs sm:placeholder:text-sm `
+const formGroupStyel = `flex
+  border-b border-b-black dark:border-b-white w-[80%] mx-auto md:w-[48%] md:mx-[1%] lg:w-[31%] p-1
 `
+const errorStyle = `
+text-xs whitespace-nowrap text-red-500`
 //  //
 
 export const Users = () => {
     const notif = (msg) => toast(msg)
     const dispatch = useDispatch()
-    const [firstname, firstNameBind, resetFirstname] = useInput('')
-    const [lastname, lastNameBind, resetLastName] = useInput('')
-    const [username, usernameBind, resetUsername] = useInput('')
-    const [password, passwordBind, resetPassword] = useInput('')
-    const [phone, phoneBind, resetPhone] = useInput('')
-    const [city, cityBind, resetcity] = useInput('')
-    const [email, emailBind, resetemail] = useInput('')
-    const [score, scoreBind, resetScore] = useInput('')
-    const [buy, buyBind, resetBuy] = useInput('')
-
-    const addNewUser = async (e) => {
-        e.preventDefault()
-        const newUser = {
-            firstname,
-            lastname,
-            username,
-            password,
-            phone,
-            city,
-            email,
-            score,
-            buy,
-        }
-        const res = await axios.post('users', newUser)
-        if (res.status == 201) {
-            notif(`${newUser.firstname} با موفقیت افزوده شد`)
-            dispatch(getUsers())
-            resetFirstname()
-            resetLastName()
-            resetUsername()
-            resetPassword()
-            resetPhone()
-            resetcity()
-            resetemail()
-            resetScore()
-            resetBuy()
-            setOpenForm(false)
-        }
-    }
     const [openForm, setOpenForm] = useState(false)
+    const { handleSubmit, getFieldProps, touched, errors,
+        resetForm } = useFormik({
+            initialValues: {
+                firstname: '',
+                lastname: '',
+                username: '',
+                password: '',
+                email: '',
+                phone: '',
+                city: '',
+                buy: '',
+                scor: ''
+            },
+            validationSchema: yup.object({
+                firstname: yup.string().required('*'),
+                username: yup.string().required('*'),
+                email: yup.string().email(`email isn't valid`).required('*')
+            })
+            ,
+            onSubmit: async values => {
+                const res = await axios.post('users', values)
+                if (res.status == 201) {
+                    dispatch(getUsers())
+                    notif(`${values.firstname}با موفقیت افزوده شد`)
+                    resetForm()
+                }
+            }
+        })
     return (
         <>
             <AddNewItem
@@ -66,66 +59,78 @@ export const Users = () => {
                 setOpenForm={setOpenForm}
                 title={"افزودن کاربر"}
             >
-                <form className='w-full flex flex-wrap' onSubmit={addNewUser} >
+                <form className='w-full flex flex-wrap' onSubmit={handleSubmit} >
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('firstname')}
+                            className={inputstyle}
                             placeholder='نام'
-                            {...firstNameBind}
                             type="text" />
+                        {touched?.firstname && errors?.firstname && <span className={errorStyle}>{errors.firstname}</span>}
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
-                            placeholder='نام خانوادگی'
-                            {...lastNameBind} type="text" />
+                        <input autoComplete='off'
+                            {...getFieldProps('lastname')}
+                            className={inputstyle}
+                            placeholder='نام خانوادگی' type="text" />
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('username')}
+                            className={inputstyle}
                             placeholder="نام کاربری"
-                            {...usernameBind}
                             type="text" />
+                        {touched?.username && errors?.username && <span className={errorStyle}>{errors.username}</span>}
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('password')}
+                            className={inputstyle}
                             placeholder='گذرواژه'
-                            {...passwordBind}
                             type="text" />
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('email')}
+                            className={inputstyle}
                             placeholder='ایمیل'
-                            {...emailBind}
                             type="text" />
+                        {touched?.email && errors?.email && <span className={errorStyle}>{errors.email}</span>}
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('phone')}
+                            className={inputstyle}
                             placeholder='شماره تماس'
-                            {...phoneBind}
                             type="text" />
                     </div>
                     <div className={formGroupStyel}>
 
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('city')}
+                            className={inputstyle}
                             placeholder="شهر"
-                            {...cityBind}
                             type="text"
                         />
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('buy')}
+                            className={inputstyle}
                             placeholder="مجموع خرید"
-                            {...buyBind}
                             type="text"
                         />
                     </div>
                     <div className={formGroupStyel}>
-                        <input className={inputstyle}
+                        <input autoComplete='off'
+                            {...getFieldProps('score')}
+                            className={inputstyle}
                             placeholder='امتیاز'
-                            {...scoreBind}
                             type="text"
                         />
                     </div>
                     <div className='w-full mt-2'>
-                        <Button onClick={addNewUser} className='block mr-auto'>
+                        <Button onClick={handleSubmit} className='block mr-auto'>
                             افزودن
                         </Button>
                     </div>

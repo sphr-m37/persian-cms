@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // routing
 import { useRoutes } from 'react-router-dom'
 import { routes } from './index'

@@ -7,7 +7,7 @@ import { GrFormClose } from 'react-icons/gr'
 // tailwind css classes
 const listItemStyle = `px-2 my-1
 cursor-pointer
-hover:bg-gray-800
+hover:bg-gray-800 hover:text-white 
 `
 // //
 export const SideBar = () => {
@@ -20,12 +20,13 @@ export const SideBar = () => {
     }, [location.pathname])
     return (
         <>
-            <HiOutlineMenuAlt1 onClick={handleSidebar} className='sm:none text-3xl absolute' />
-            <div className={`${!open && 'hidden'} w-full h-screen absolute  top-0 right-0 bg-black opacity-50 `}>
+            <HiOutlineMenuAlt1 onClick={handleSidebar} className='sm:none text-3xl absolute text-gray-600 dark:text-white' />
+            <div className={`${!open && 'hidden'} w-full h-screen absolute  top-0 right-0 bg-black opacity-50`} onClick={handleSidebar}>
             </div>
-            <div className={`${!open && 'hidden'} sm:block fixed h-screen bg-gray-600 text-white w-52  pt-2`}>
+            <div className={`${!open && 'hidden'} sm:block fixed h-screen 
+            bg-gray-300 dark:bg-gray-600 dark:text-white w-52  pt-2`}>
                 <GrFormClose className={`block mr-auto text-3xl cursor-pointer absolute top-0 left-0 z-10 text-white ${!open && 'hidden'}`} onClick={handleSidebar} />
-                <span className='block text-center'>
+                <span className='block text-center border-b pb-2'>
                     خوش آمدید
                 </span>
                 <ul className='mt-2'>

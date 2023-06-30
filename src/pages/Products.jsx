@@ -7,105 +7,134 @@ import { useDispatch } from 'react-redux'
 // toastify 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 // tailwind css classes
 const inputstyle = `
-w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
-const formGroupStyel = `
-  border-b w-[80%] mx-auto md:w-[48%] md:mx-[1%] lg:w-[31%] p-1
+w-full h-full outline-none bg-transparent placeholder:text-[#333] dark:placeholder:text-white placeholder:text-xs sm:placeholder:text-sm `
+const formGroupStyel = `flex
+  border-b border-b-black dark:border-b-white w-[80%] mx-auto md:w-[48%] md:mx-[1%] lg:w-[31%] p-1
 `
+const errorStyle = `
+text-xs whitespace-nowrap text-red-500`
 //  //
+
 export const Products = () => {
   const dispatch = useDispatch()
-  const [img, imgBind, imgReset] = useInput('')
-  const [title, titleBind, titleReset] = useInput('')
-  const [price, priceBind, priceReset] = useInput('')
-  const [popularity, popularityBind, popularityReset] = useInput('')
-  const [count, countBind, countReset] = useInput('')
-  const [sale, saleBind, saleReset] = useInput('')
-  const [colors, colorsBind, colorsReset] = useInput('')
-  const [productDesc, productDescBind, productDescReset] = useInput('')
+  const notif = msg => toast(msg)
   const [openForm, setOpenForm] = useState(false)
+  const {
+    handleSubmit,
+    getFieldProps,
+    resetForm,
+    touched,
+    errors
+  } = useFormik({
+    initialValues: {
+      title: '',
+      price: '',
+      count: '',
+      popularity: '',
+      sale: '',
+      colors: '',
+      img: '',
+      productDesc: ''
+    },
+    validationSchema: yup.object({
+      title: yup.string().required('*'),
+      price: yup.number().nullable().typeError('عدد وارد کنید').required('*'),
+      count: yup.number().nullable().typeError('عدد وارد کنید').required('*'),
+      sale: yup.number().nullable().typeError('عدد وارد کنید'),
+      colors: yup.number().nullable().typeError('عدد وارد کنید'),
+      popularity: yup.number().nullable().typeError('عدد وارد کنید'),
+      productDesc: yup.string().max(150, 'حداکثر 150 حرف'),
+    }),
+    onSubmit: async values => {
+      const res = await axios.post('products', values)
+      if (res.status == 201) {
+        dispatch(getProducts())
+        notif(`${values.title}با موفقیت افزوده شد`)
+        resetForm()
+      }
+    },
+  })
 
-  const notif = (msg) => toast(msg)
-  const addNewProduct = async e => {
-    e.preventDefault()
-    const newProduct = {
-      title,
-      price,
-      count,
-      img,
-      popularity,
-      sale,
-      colors,
-      productDesc
-    }
-    const res = await axios.post('products', newProduct)
-    if (res.status == 201) {
-      notif(`${title} با موفقیت افزوده شد`)
-      dispatch(getProducts())
-      imgReset()
-      titleReset()
-      priceReset()
-      popularityReset()
-      countReset()
-      saleReset()
-      colorsReset()
-      productDescReset()
-      setOpenForm(false)
-    }
-  }
+
   return (
     <>
       <AddNewItem title={'افزودن محصول'} openForm={openForm}
         setOpenForm={setOpenForm} >
-        <form className='w-full flex flex-wrap'>
+        <form className='w-full flex flex-wrap'
+          onSubmit={handleSubmit}>
           <div className={formGroupStyel}>
-            <input type="text"
+            <input autoComplete='off'
               placeholder='عنوان'
-              className={inputstyle}
-              {...titleBind} />
+              type="text"
+              {...getFieldProps('title')}
+              className={inputstyle} />
+            {touched?.title && errors?.title && <span className={errorStyle}>{errors?.title}</span>}
           </div>
           <div className={formGroupStyel}>
-            <input type="text"
+            <input autoComplete='off'
+              type="text"
+              {...getFieldProps('price')}
               placeholder='قیمت'
-              className={inputstyle}
-              {...priceBind} />
+              className={inputstyle} />
+            {touched?.price && errors?.price && <span
+              className={errorStyle}>{errors?.price}</span>}
           </div>
           <div className={formGroupStyel}>
-            <input type="text"
+            <input
+              autoComplete='off'
+              type="text"
+              {...getFieldProps('count')}
+              placeholder='موجودی'
+              className={inputstyle} />
+            {touched?.count && errors?.count && <span
+              className={errorStyle}>{errors?.count}</span>}
+          </div>
+          <div className={formGroupStyel}>
+            <input
+              autoComplete='off'
+              type="text"
+              {...getFieldProps('popularity')}
               placeholder='محبوبیت'
-              className={inputstyle}
-              {...popularityBind} />
+              className={inputstyle} />
+            {touched?.popularity && errors?.popularity && <span
+              className={errorStyle}>{errors?.popularity}</span>}
           </div>
           <div className={formGroupStyel}>
-            <input type="text"
-              placeholder='امتیاز'
-              className={inputstyle}
-              {...countBind} />
-          </div>
-          <div className={formGroupStyel}>
-            <input type="text"
+            <input autoComplete='off'
+              type="text"
+              {...getFieldProps('sale')}
               placeholder='فروش'
-              className={inputstyle}
-              {...saleBind} />
-          </div>
+              className={inputstyle} />
+            {touched?.sale && errors?.sale && <span className={errorStyle}>{errors?.sale}</span>}          </div>
           <div className={formGroupStyel}>
-            <input type="text"
+            <input autoComplete='off'
+              type="text"
+              {...getFieldProps('colors')}
               placeholder='تعداد رنگ بندی'
-              className={inputstyle}
-              {...colorsBind} />
+              className={inputstyle} />
+            {touched?.colors && errors?.colors && <span className={errorStyle}>{errors?.colors}</span>}
           </div>
           <div className={formGroupStyel}>
-            <input type="text"
+            <input autoComplete='off'
+              type="text"
+              {...getFieldProps('img')}
               placeholder='مسیر عکس'
-              className={inputstyle}
-              {...imgBind} />
+              className={inputstyle} />
           </div>
           <div className={formGroupStyel}>
-            <textarea {...productDescBind} className={`${inputstyle} resize-none`} maxLength={150} placeholder='توضیحات محصول' />
+            <textarea
+              className={`${inputstyle} resize-none`}
+              {...getFieldProps('productDesc')}
+              name='productDesc'
+              placeholder='توضیحات محصول' />
+            {touched?.productDesc && errors?.productDesc && <span className={errorStyle}>{errors?.productDesc}</span>}
           </div>
           <div className='w-full mt-2'>
-            <Button onClick={addNewProduct} className='block mr-auto'>
+            <Button className='block mr-auto' type="submit">
               افزودن
             </Button>
           </div>

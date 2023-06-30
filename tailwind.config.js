@@ -4,17 +4,21 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
+    borderWidth: {
+      DEFAULT: '1px'
+    },
     extend: {
       fontFamily: {
         iryek: ['iran-yekan', 'sans-serif']
       }
     },
     container: {
-      center:true,
+      center: true,
       padding: {
         DEFAULT: '10px',
-        sm:'20px'
+        sm: '20px'
       }
     }
   },

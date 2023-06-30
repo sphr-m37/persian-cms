@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../index'
-import {ErrorMsg, Button, DeleteModal, EditModal,DetailModal, useInput
+import {
+    ErrorMsg, Button, DeleteModal, EditModal, DetailModal, useInput
 } from '../index'
 // axios
 import axios from 'axios'
@@ -78,31 +79,33 @@ export const UsersList = () => {
     return (
         <div>
             {users.length ? <div className='bg-gray-400 rounded-md p-2 mt-2 overflow-auto'>
-                <table id="table">
-                    <tr>
+                <table id="table" >
+                    <thead >
                         <th>نام</th>
                         <th>نام خانوادگی</th>
                         <th>شماره تماس</th>
                         <th>امتیاز</th>
                         <th>گزینه ها</th>
-                    </tr>
-                    {users.map(user => <tr key={user?.id}>
-                        <td>{user?.firstname}</td>
-                        <td>{user?.lastname}</td>
-                        <td>{user?.phone}</td>
-                        <td >{user?.score}</td>
-                        <td className='flex justify-center'>
-                            <Button className='text-red-600 hover:opacity-80' onClick={() => {
-                                setCurrentUser(user)
-                                handleDeleteModal()
-                            }}>حذف</Button>
-                            <Button className='text-yellow-600 hover:opacity-80'
-                                onClick={() => showِEditlModalHandle(user)}>ویرایش</Button>
-                            <Button className='text-blue-600 hover:opacity-80'
-                                onClick={() => showDetailHandle(user)}
-                            >جزئیات</Button>
-                        </td>
-                    </tr>)}
+                    </thead>
+                    <tbody>
+                        {users.map(user => <tr key={user?.id}>
+                            <td>{user?.firstname}</td>
+                            <td>{user?.lastname}</td>
+                            <td>{user?.phone}</td>
+                            <td >{user?.score}</td>
+                            <td className='flex justify-center'>
+                                <Button className='text-red-600 hover:opacity-80' onClick={() => {
+                                    setCurrentUser(user)
+                                    handleDeleteModal()
+                                }}>حذف</Button>
+                                <Button className='text-yellow-600 hover:opacity-80'
+                                    onClick={() => showِEditlModalHandle(user)}>ویرایش</Button>
+                                <Button className='text-blue-600 hover:opacity-80'
+                                    onClick={() => showDetailHandle(user)}
+                                >جزئیات</Button>
+                            </td>
+                        </tr>)}
+                    </tbody>
                 </table>
                 {showِDeleteModal && <DeleteModal title={currentUser.firstname}
                     handleDeleteModal={handleDeleteModal} deleteMethod={deleteUser} />}

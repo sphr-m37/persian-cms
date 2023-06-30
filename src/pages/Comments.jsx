@@ -49,34 +49,36 @@ export const Comments = () => {
     <div>
       {comments.length ? <div className='bg-gray-400 rounded-md p-2 mt-2 overflow-auto'>
         <table id="table">
-          <tr>
+          <thead>
             <th>نام کاربر</th>
             <th> نام محصول</th>
             <th>تاریخ</th>
             <th>زمان</th>
             <th>وضعیت</th>
             <th>گزینه ها</th>
-          </tr>
-          {comments.map(comment => <tr key={comment?.id}>
-            <td>{comment?.userID}</td>
-            <td>{comment?.productID}</td>
-            <td>{comment?.date}</td>
-            <td >{comment?.hour}</td>
-            <td>{comment?.isAccept ? 'تایید شده' : "در انتظار تایید"}</td>
-            <td className='flex justify-center'>
-              <Button className='text-red-600 hover:opacity-80'
-                onClick={() => {
-                  handleDeleteModal()
-                  setCurrentComment(comment)
-                }}>حذف</Button>
-              <Button className='text-blue-600 hover:opacity-80'
-                onClick={() => {
-                  setShowDetailModal(true)
-                  setCurrentComment(comment)
-                }}
-              >خواندن {comment?.isAccept ? " / رد کردن " : " / تایید"}</Button>
-            </td>
-          </tr>)}
+          </thead>
+          <tbody>
+            {comments.map(comment => <tr key={comment?.id}>
+              <td>{comment?.userID}</td>
+              <td>{comment?.productID}</td>
+              <td>{comment?.date}</td>
+              <td >{comment?.hour}</td>
+              <td>{comment?.isAccept ? 'تایید شده' : "در انتظار تایید"}</td>
+              <td className='flex justify-center'>
+                <Button className='text-red-600 hover:opacity-80'
+                  onClick={() => {
+                    handleDeleteModal()
+                    setCurrentComment(comment)
+                  }}>حذف</Button>
+                <Button className='text-blue-600 hover:opacity-80'
+                  onClick={() => {
+                    setShowDetailModal(true)
+                    setCurrentComment(comment)
+                  }}
+                >خواندن {comment?.isAccept ? " / رد کردن " : " / تایید"}</Button>
+              </td>
+            </tr>)}
+          </tbody>
         </table>
       </div> : <ErrorMsg title='کانتی موجود نیست' />}
       {showDetailModal && <DetailModal comment={currentComment}
