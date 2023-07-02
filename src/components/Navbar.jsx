@@ -22,7 +22,7 @@ export const Navbar = () => {
         {theme === 'light' ? <CiDark /> : <CiLight />}
       </div>
       <div className=' flex flex-col sm:flex-row items-center ' >
-        <img src="./src/assets/react.svg" alt="avatar" className='ml-2 w-10 h-10 rounded-full' />
+        <img src="./assets/img/react.svg" alt="avatar" className='ml-2 w-10 h-10 rounded-full' />
         <div className="my-2 flex items-center min-w-fit whitespace-nowrap dark:text-white ">
           <span> نام و نام خانوادگی </span>
           {/* when template handled by backend and authentication fixed use this code to show profile options  */}
