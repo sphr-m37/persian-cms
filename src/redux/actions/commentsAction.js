@@ -1,7 +1,11 @@
-import axios from "axios"
+import { supabase } from "../../index"
 import { GET_COMMENTS } from "../Types"
 
 export const getComments = () => async dispatch => {
-    const res = await axios.get('comments')
-    dispatch({ type: GET_COMMENTS, payload: res.data })
+    const { data: comments, error } = await supabase.from('comments').select()
+    if (!error) {
+        dispatch({ type: GET_COMMENTS, payload: comments })
+    } else {
+       console.log(error)
+    }
 }

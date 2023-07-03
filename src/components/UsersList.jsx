@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers } from '../index'
+import { getUsers, supabase } from '../index'
 import {
     ErrorMsg, Button, DeleteModal, EditModal, DetailModal, useInput
 } from '../index'
-// axios
-import axios from 'axios'
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,13 +38,16 @@ export const UsersList = () => {
     const [email, emailBind] = useInput(currentUser.email)
     const [score, scoreBind] = useInput(currentUser.score)
     const [buy, buyBind] = useInput(currentUser.buy)
-    const notif = (msg) => toast(msg)
+
+
     const deleteUser = async () => {
-        const res = await axios.delete(`users/${currentUser.id}`)
-        if (res.status == 200) {
-            notif(`${currentUser.firstname} با موفقیت حذف شد`)
+        const { error } = await supabase.from(`users`).delete().eq('id', currentUser.id)
+        if (!error) {
+            toast(`${currentUser.firstname} با موفقیت حذف شد`)
             handleDeleteModal()
             dispatch(getUsers())
+        } else {
+            toast(error.message)
         }
     }
     const showDetailHandle = (user) => {
@@ -69,11 +70,13 @@ export const UsersList = () => {
             score,
             buy,
         }
-        const res = await axios.patch(`users/${currentUser.id}`, editedUser)
-        if (res.status == 200) {
-            notif(`${editedUser.firstname} با موفقیت ویرایش شد`)
+        const { error } = await supabase.from(`users`).update(editedUser).eq('id', currentUser.id)
+        if (!error) {
+            toast(`${editedUser.firstname} با موفقیت ویرایش شد`)
             handleEditModal()
             dispatch(getUsers())
+        } else {
+            toast(error.message)
         }
     }
     return (

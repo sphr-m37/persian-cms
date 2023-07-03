@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 // components
-import { ProductsList, AddNewItem, Button, getProducts } from '../index'
+import { ProductsList, AddNewItem, Button, getProducts, supabase } from '../index'
 import { useInput } from '../hooks/useInput'
-import axios from 'axios'
+
 import { useDispatch } from 'react-redux'
 // toastify 
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,7 +21,7 @@ text-xs whitespace-nowrap text-red-500`
 
 export const Products = () => {
   const dispatch = useDispatch()
-  const notif = msg => toast(msg)
+  const toast = msg => toast(msg)
   const [openForm, setOpenForm] = useState(false)
   const {
     handleSubmit,
@@ -50,11 +50,13 @@ export const Products = () => {
       productDesc: yup.string().max(150, 'حداکثر 150 حرف'),
     }),
     onSubmit: async values => {
-      const res = await axios.post('products', values)
-      if (res.status == 201) {
+      const { error } = await supabase.from('products').insert(values)
+      if (!error) {
         dispatch(getProducts())
-        notif(`${values.title}با موفقیت افزوده شد`)
+        toast(`${values.title}با موفقیت افزوده شد`)
         resetForm()
+      } else {
+        toast(error.message)
       }
     },
   })

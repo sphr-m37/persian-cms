@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
 // components
-import { Button, DeleteModal, DetailModal, ErrorMsg } from '../index'
+import { Button, DeleteModal, DetailModal, ErrorMsg, supabase } from '../index'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getComments } from '../index'
-// axios
-import axios from 'axios'
+
 // toastify
 import { toast, ToastContainer } from 'react-toastify'
 export const Comments = () => {
   let { comments } = useSelector(state => state.comments)
   comments = comments.reverse()
   const dispatch = useDispatch()
-  const notif = (msg) => toast(msg)
   useEffect(() => {
     dispatch(getComments())
   }, [])
@@ -21,28 +19,25 @@ export const Comments = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const handleDetailModal = () => setShowDetailModal(prev => !prev)
   const handleDeleteModal = () => setShowDeleteModal(prev => !prev)
-  const confirmComment = async () => {
-    const res = await axios.patch(`comments/${currentComment.id}`, { isAccept: 1 })
-    if (res.status == 200) {
+
+  const changeStatus = async (status) => {
+    const { error } = await supabase.from('comments').update({ isAccept: status }).eq('id', currentComment.id)
+    if (!error) {
       handleDetailModal()
       dispatch(getComments())
-      notif('کامنت با موفقیت تایید شد')
-    }
-  }
-  const rejectComment = async () => {
-    const res = await axios.patch(`comments/${currentComment.id}`, { isAccept: 0 })
-    if (res.status == 200) {
-      handleDetailModal()
-      dispatch(getComments())
-      notif('کامنت با موفقیت رد شد')
+      toast('کامنت با موفقیت رد شد')
+    } else {
+      toast(error.message)
     }
   }
   const deleteComment = async () => {
-    const res = await axios.delete(`comments/${currentComment.id}`)
-    if (res.status == 200) {
+    const { error } = await supabase.from('comments').delete().eq('id', currentComment.id)
+    if (!error) {
       handleDeleteModal()
       dispatch(getComments())
-      notif('کامنت با موفقت حذف شد')
+      toast('کامنت با موفقت حذف شد')
+    } else {
+      toast(error.message)
     }
   }
   return (
@@ -80,11 +75,10 @@ export const Comments = () => {
             </tr>)}
           </tbody>
         </table>
-      </div> : <ErrorMsg title='کانتی موجود نیست' />}
+      </div> : <ErrorMsg title='کامنتی موجود نیست' />}
       {showDetailModal && <DetailModal comment={currentComment}
         handleDetailModal={handleDetailModal}
-        confirmComment={confirmComment}
-        rejectComment={rejectComment}
+        changeStatus={changeStatus}
         title='کامنت'>
         <p>
           {currentComment?.body}

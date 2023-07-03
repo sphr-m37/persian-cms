@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { Button } from '../../index'
 
 export const DetailModal = ({ title, children,
-    handleDetailModal, comment, confirmComment, rejectComment
+    handleDetailModal, comment, changeStatus
 }) => {
     return (
         <>{createPortal(<div className='w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[#1e13137b] px-2' onClick={handleDetailModal}>
@@ -14,13 +14,13 @@ export const DetailModal = ({ title, children,
                 </div>{comment &&
                     <>{comment.isAccept ? <Button onClick={e => {
                         e.stopPropagation()
-                        rejectComment()
+                        changeStatus(0)
                     }} className='bg-gray-700 text-red-400 '>
                         رد کردن
                     </Button> :
                         <Button onClick={e => {
                             e.stopPropagation()
-                            confirmComment()
+                        changeStatus(1)
                         }
                         } className='bg-gray-700 text-red-400'>
                             تایید

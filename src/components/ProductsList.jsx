@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // components
-import { Button, DeleteModal, DetailModal, EditModal, ErrorMsg } from '../index'
-// axios
-import axios from 'axios'
+import { Button, DeleteModal, DetailModal, EditModal, ErrorMsg, supabase } from '../index'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../index'
@@ -32,27 +30,29 @@ export const ProductsList = () => {
     const handleDeleteModal = () => setShowDeleteModal(prev => !prev)
     const handleDetailModal = () => setShowDetailModal(prev => !prev)
     const handleEditModal = () => setShowEditlModal(prev => !prev)
-    const notif = (msg) => toast(msg)
+
     const deleteProduct = async () => {
-        const res = await axios.delete(`products/${currentProduct.id}`)
-        if (res.status == 200) {
+        const { error } = await supabase.from(`products`).delete().eq('id', currentProduct.id)
+        if (!error) {
             dispatch(getProducts())
             handleDeleteModal()
-            notif(`${currentProduct.title} با موفقیت حذف شد`)
+            toast(`${currentProduct.title} با موفقیت حذف شد`)
+        } else {
+            toast(error.message)
         }
     }
     const showDetailHandle = (product) => {
         setCurrentProduct(product)
         handleDetailModal()
     }
-    const [title, titleBind, titleReset] = useInput(currentProduct.title)
-    const [img, imgBind, imgReset] = useInput(currentProduct.img)
-    const [price, priceBind, priceReset] = useInput(currentProduct.price)
-    const [popularity, popularityBind, popularityReset] = useInput(currentProduct.popularity)
-    const [count, countBind, countReset] = useInput(currentProduct.count)
-    const [sale, saleBind, saleReset] = useInput(currentProduct.sale)
-    const [colors, colorsBind, colorsReset] = useInput(currentProduct.colors)
-    const [productDesc, productDescBind, productDescReset] = useInput(currentProduct.productDesc)
+    const [title, titleBind] = useInput(currentProduct.title)
+    const [img, imgBind] = useInput(currentProduct.img)
+    const [price, priceBind] = useInput(currentProduct.price)
+    const [popularity, popularityBind] = useInput(currentProduct.popularity)
+    const [count, countBind] = useInput(currentProduct.count)
+    const [sale, saleBind] = useInput(currentProduct.sale)
+    const [colors, colorsBind] = useInput(currentProduct.colors)
+    const [productDesc, productDescBind] = useInput(currentProduct.productDesc)
     const editModalHandle = product => {
         setCurrentProduct(product)
         handleEditModal()
@@ -68,11 +68,13 @@ export const ProductsList = () => {
             colors,
             productDesc,
         }
-        const res = await axios.patch(`products/${currentProduct.id}`, editedProduct)
-        if (res.status == 200) {
-            notif(`${editedProduct.title} با موفقیت ویرایش شد `)
+        const { error } = await supabase.from('products').update(editedProduct).eq('id', currentProduct.id)
+        if (!error) {
+            toast(`${editedProduct.title} با موفقیت ویرایش شد `)
             dispatch(getProducts())
             handleEditModal()
+        } else {
+            toast(error.message)
         }
     }
     return (<>

@@ -25,7 +25,7 @@ export { getUsers } from './redux/actions/usersAction'
 export { getComments } from './redux/actions/commentsAction'
 export { getOrders } from './redux/actions/orderAction'
 export { getDiscounts } from './redux/actions/discountAction'
-
+export { supabase } from './supbase/supabase'
 export { productsReducer } from './redux/reducers/productsReducer'
 export { usersReducer } from './redux/reducers/usersReducer'
 export { commentsReducer } from './redux/reducers/commentReducer'

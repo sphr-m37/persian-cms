@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 
 //commponents
-import { AddNewItem, Button, UsersList, getUsers, useInput } from '../index'
+import { AddNewItem, Button, UsersList, getUsers, supabase } from '../index'
 import { useDispatch } from 'react-redux'
-// axios
-import axios from 'axios'
+
 // toastify 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFormik } from 'formik';
 import * as yup from 'yup'
@@ -21,7 +20,6 @@ text-xs whitespace-nowrap text-red-500`
 //  //
 
 export const Users = () => {
-    const notif = (msg) => toast(msg)
     const dispatch = useDispatch()
     const [openForm, setOpenForm] = useState(false)
     const { handleSubmit, getFieldProps, touched, errors,
@@ -35,7 +33,7 @@ export const Users = () => {
                 phone: '',
                 city: '',
                 buy: '',
-                scor: ''
+                score: ''
             },
             validationSchema: yup.object({
                 firstname: yup.string().required('*'),
@@ -44,11 +42,14 @@ export const Users = () => {
             })
             ,
             onSubmit: async values => {
-                const res = await axios.post('users', values)
-                if (res.status == 201) {
+                const { error } = await supabase.from('users').insert(values)
+                if (!error) {
                     dispatch(getUsers())
-                    notif(`${values.firstname}با موفقیت افزوده شد`)
+                    toast(`${values.firstname}با موفقیت افزوده شد`)
                     resetForm()
+                    setOpenForm(false)
+                } else {
+                    toast(error.message)
                 }
             }
         })
