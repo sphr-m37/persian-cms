@@ -4,14 +4,18 @@ import { ErrorMsg } from '../index'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrders } from '../index'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
+
 export const Orders = () => {
+
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getOrders())
-
   }, [])
+
   const { orders } = useSelector(state => state.orders)
+  
   return (
     <>
       {orders.length ?

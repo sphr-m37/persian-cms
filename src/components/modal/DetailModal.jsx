@@ -6,7 +6,7 @@ export const DetailModal = ({ title, children,
     handleDetailModal, comment, changeStatus
 }) => {
     return (
-        <>{createPortal(<div className='w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[#1e13137b] px-2' onClick={handleDetailModal}>
+        <>{createPortal(<div className=' w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[#1e13137b] px-2' onClick={handleDetailModal}>
             <div className='bg-white p-2 text-sm min-w-[300px] sm:min-w-[400px] max-w-[500px]' onClick={e => e.stopPropagation()} >
                 <div className='mb-6'>
                     <h1 className='mb-4 text-center'>جزئیات {title}</h1>

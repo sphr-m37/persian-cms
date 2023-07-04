@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 
 //commponents
-import { AddNewItem, Button, UsersList, getUsers, supabase } from '../index'
-import { useDispatch } from 'react-redux'
+import { AddNewItem, Button, LOADING, UsersList, getUsers, supabase } from '../index'
+import { useDispatch, useSelector } from 'react-redux'
 
 // toastify 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFormik } from 'formik';
 import * as yup from 'yup'
+import { Loader } from '../components/Loader';
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] dark:placeholder:text-white placeholder:text-xs sm:placeholder:text-sm `
@@ -42,6 +43,7 @@ export const Users = () => {
             })
             ,
             onSubmit: async values => {
+                dispatch({ type: LOADING })
                 const { error } = await supabase.from('users').insert(values)
                 if (!error) {
                     dispatch(getUsers())
@@ -53,6 +55,7 @@ export const Users = () => {
                 }
             }
         })
+    const { loading } = useSelector(state => state.users)
     return (
         <>
             <AddNewItem

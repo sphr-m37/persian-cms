@@ -1,19 +1,27 @@
 import React, { useEffect } from 'react'
 // components
-import { Button, ErrorMsg, supabase, useInput } from '../index'
+import { Button, ErrorMsg, LOADED, LOADING, supabase, useInput } from '../index'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getDiscounts } from '../index'
 
 import { ToastContainer, toast } from 'react-toastify'
+import { Loader } from '../components/Loader'
+
 export const Discounts = () => {
+
   const dispatch = useDispatch()
-  const { discounts } = useSelector(state => state.discounts)
+
+  let { discounts, loading } = useSelector(state => state.discounts)
+  discounts = [...discounts].reverse()
   useEffect(() => {
     dispatch(getDiscounts())
   }, [])
+
   const [amount, discpuntBind, resetDiscount] = useInput('5000')
+
   const createCode = async () => {
+    dispatch({ type: LOADING })
     let code = String(Math.random())
     code = code.split('').slice(-5).join('')
     const newCode = {
@@ -24,9 +32,12 @@ export const Discounts = () => {
       dispatch(getDiscounts())
       resetDiscount()
       toast('کد تخفیف با موفقیت ایجاد شد')
+    } else {
+      toast(error.message)
     }
   }
   const deleteCode = async id => {
+    dispatch({ type: LOADING })
     const { error } = await supabase.from('discounts').delete().eq('id', id)
     if (!error) {
       dispatch(getDiscounts())
@@ -36,6 +47,7 @@ export const Discounts = () => {
     }
   }
   const changeStatus = async (id, status) => {
+    dispatch({ type: LOADING })
     const { error } = await supabase.from(`discounts`).update({ status: status === 1 ? 0 : 1 }).eq('id', id)
     if (!error) {
       dispatch(getDiscounts())
@@ -46,60 +58,61 @@ export const Discounts = () => {
   }
   return (
     <>
-      <div className='w-full flex flex-col bg-white p-4'>
-        <label>
-          میزان تخفیف : {amount}
-        </label>
-        <input
-          type="range"
-          min='0'
-          max='100000'
-          step='5000'
-          {...discpuntBind}
-          placeholder='تا 100,000 تومان'
-        />
-        <Button className='bg-gray-500 text-white'
-          onClick={createCode}>
-          ایجاد کد تخفیف
-        </Button>
-      </div>
-      {discounts.length ? <table id='table'>
-        <thead>
-          <th>
-            شناسه
-          </th>
-          <th>
-            کد تخفیف
-          </th>
-          <th>
-            وضعیت
-          </th>
-          <th>
-            میزان تخفیف
-          </th>
-          <th>
-            گزینه ها
-          </th>
-        </thead>
-        <tbody>
-          {discounts.map(discount => <tr key={discount.id}>
-            <td>{discount.id}</td>
-            <td>{discount.code}</td>
-            <td>{discount.status ? 'فعال' : 'غیرفعال'}</td>
-            <td>{discount.amount} تومان</td>
-            <td>
-              <Button onClick={() => deleteCode(discount.id)}>
-                حذف
-              </Button>
-              <Button className={`bg-gray-500 text-${discount.status ? 'red' : 'green'}-400`} onClick={() => changeStatus(discount.id,
-                discount.status)}>
-                {discount.status ? 'غیرفعال کردن' : 'فعال کردن'}
-              </Button>
-            </td>
-          </tr>)}
-        </tbody>
-      </table> : <ErrorMsg title='کد تخفیفی موجود نیست' />}
-      <ToastContainer />
+      {loading && <Loader />}
+        <div className='w-full flex flex-col bg-white p-4'>
+          <label>
+            میزان تخفیف : {amount}
+          </label>
+          <input
+            type="range"
+            min='0'
+            max='100000'
+            step='5000'
+            {...discpuntBind}
+            placeholder='تا 100,000 تومان'
+          />
+          <Button className='bg-gray-500 text-white'
+            onClick={createCode}>
+            ایجاد کد تخفیف
+          </Button>
+        </div>
+        {discounts.length ? <table id='table'>
+          <thead>
+            <th>
+              شناسه
+            </th>
+            <th>
+              کد تخفیف
+            </th>
+            <th>
+              وضعیت
+            </th>
+            <th>
+              میزان تخفیف
+            </th>
+            <th>
+              گزینه ها
+            </th>
+          </thead>
+          <tbody>
+            {discounts.map(discount => <tr key={discount.id}>
+              <td>{discount.id}</td>
+              <td>{discount.code}</td>
+              <td>{discount.status ? 'فعال' : 'غیرفعال'}</td>
+              <td>{discount.amount} تومان</td>
+              <td>
+                <Button onClick={() => deleteCode(discount.id)}>
+                  حذف
+                </Button>
+                <Button className={`bg-gray-500 text-${discount.status ? 'red' : 'green'}-400`} onClick={() => changeStatus(discount.id,
+                  discount.status)}>
+                  {discount.status ? 'غیرفعال کردن' : 'فعال کردن'}
+                </Button>
+              </td>
+            </tr>)}
+          </tbody>
+        </table> : <ErrorMsg title='کد تخفیفی موجود نیست' />}
+        <ToastContainer />
     </>
   )
 }

@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 // components
-import { ProductsList, AddNewItem, Button, getProducts, supabase } from '../index'
-import { useInput } from '../hooks/useInput'
+import { ProductsList, AddNewItem, Button, getProducts, supabase, LOADING } from '../index'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // toastify 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { Loader } from '../components/Loader';
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] dark:placeholder:text-white placeholder:text-xs sm:placeholder:text-sm `
@@ -20,8 +20,6 @@ text-xs whitespace-nowrap text-red-500`
 //  //
 
 export const Products = () => {
-  const dispatch = useDispatch()
-  const toast = msg => toast(msg)
   const [openForm, setOpenForm] = useState(false)
   const {
     handleSubmit,
@@ -50,20 +48,29 @@ export const Products = () => {
       productDesc: yup.string().max(150, 'حداکثر 150 حرف'),
     }),
     onSubmit: async values => {
+      dispatch({ type: LOADING })
       const { error } = await supabase.from('products').insert(values)
       if (!error) {
         dispatch(getProducts())
         toast(`${values.title}با موفقیت افزوده شد`)
         resetForm()
+        setOpenForm(false)
       } else {
         toast(error.message)
       }
     },
   })
 
+  const dispatch = useDispatch()
+  let { products, loading } = useSelector(state => state.products)
+  products = [...products].reverse()
+  useEffect(() => {
+    dispatch(getProducts())
+  }, [])
 
   return (
     <>
+      {loading && <Loader />}
       <AddNewItem title={'افزودن محصول'} openForm={openForm}
         setOpenForm={setOpenForm} >
         <form className='w-full flex flex-wrap'
@@ -142,7 +149,7 @@ export const Products = () => {
           </div>
         </form>
       </AddNewItem>
-      <ProductsList />
+      <ProductsList products={products} />
     </>
   )
 }

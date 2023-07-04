@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers, supabase } from '../index'
+import { LOADING, getUsers, supabase } from '../index'
 import {
     ErrorMsg, Button, DeleteModal, EditModal, DetailModal, useInput
 } from '../index'
 // toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Loader } from './Loader';
 // tailwind css classes
 const inputstyle = `
 w-full h-full outline-none bg-transparent placeholder:text-[#333] placeholder:text-xs sm:placeholder:text-sm `
@@ -16,12 +17,16 @@ const formGroupStyel = `
 `
 //  //
 export const UsersList = () => {
+
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(getUsers())
     }, [])
-    let { users } = useSelector(state => state.users)
+
+    let { users, loading } = useSelector(state => state.users)
     users = [...users].reverse()
+
     const [currentUser, setCurrentUser] = useState({})
     const [showِDeleteModal, setShowِDeleteModal] = useState(false)
     const [showِDetailModal, setShowِDetailModal] = useState(false)
@@ -39,17 +44,6 @@ export const UsersList = () => {
     const [score, scoreBind] = useInput(currentUser.score)
     const [buy, buyBind] = useInput(currentUser.buy)
 
-
-    const deleteUser = async () => {
-        const { error } = await supabase.from(`users`).delete().eq('id', currentUser.id)
-        if (!error) {
-            toast(`${currentUser.firstname} با موفقیت حذف شد`)
-            handleDeleteModal()
-            dispatch(getUsers())
-        } else {
-            toast(error.message)
-        }
-    }
     const showDetailHandle = (user) => {
         setCurrentUser(user)
         handleDetailModal()
@@ -58,7 +52,21 @@ export const UsersList = () => {
         setShowEditlModal(prev => !prev)
         setCurrentUser(user)
     }
+    const deleteUser = async () => {
+        dispatch({ type: LOADING })
+        handleDeleteModal()
+        const { error } = await supabase.from(`users`).delete().eq('id', currentUser.id)
+        if (!error) {
+            toast(`${currentUser.firstname} با موفقیت حذف شد`)
+            dispatch(getUsers())
+        } else {
+            toast(error.message)
+        }
+    }
+
     const editUser = async () => {
+        dispatch({ type: LOADING })
+        handleEditModal()
         const editedUser = {
             firstname,
             lastname,
@@ -73,7 +81,6 @@ export const UsersList = () => {
         const { error } = await supabase.from(`users`).update(editedUser).eq('id', currentUser.id)
         if (!error) {
             toast(`${editedUser.firstname} با موفقیت ویرایش شد`)
-            handleEditModal()
             dispatch(getUsers())
         } else {
             toast(error.message)
@@ -81,6 +88,7 @@ export const UsersList = () => {
     }
     return (
         <div>
+            {loading && <Loader />}
             {users.length ? <div className='bg-gray-400 rounded-md p-2 mt-2 overflow-auto'>
                 <table id="table" >
                     <thead >

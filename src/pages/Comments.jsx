@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 // components
-import { Button, DeleteModal, DetailModal, ErrorMsg, supabase } from '../index'
+import { Button, DeleteModal, DetailModal, ErrorMsg, LOADED, LOADING, supabase } from '../index'
 // redux
 import { useDispatch, useSelector } from 'react-redux'
 import { getComments } from '../index'
 
 // toastify
 import { toast, ToastContainer } from 'react-toastify'
+import { Loader } from '../components/Loader'
 export const Comments = () => {
-  let { comments } = useSelector(state => state.comments)
+  let { comments, loading } = useSelector(state => state.comments)
   comments = comments.reverse()
   const dispatch = useDispatch()
   useEffect(() => {
@@ -21,28 +22,31 @@ export const Comments = () => {
   const handleDeleteModal = () => setShowDeleteModal(prev => !prev)
 
   const changeStatus = async (status) => {
+    dispatch({ type: LOADING })
+    handleDetailModal()
     const { error } = await supabase.from('comments').update({ isAccept: status }).eq('id', currentComment.id)
     if (!error) {
-      handleDetailModal()
-      dispatch(getComments())
       toast('کامنت با موفقیت رد شد')
+      dispatch(getComments())
     } else {
       toast(error.message)
     }
   }
   const deleteComment = async () => {
+    dispatch({ type: LOADING })
+    handleDeleteModal()
     const { error } = await supabase.from('comments').delete().eq('id', currentComment.id)
     if (!error) {
-      handleDeleteModal()
       dispatch(getComments())
       toast('کامنت با موفقت حذف شد')
     } else {
       toast(error.message)
     }
   }
-  return (
+  return (<>
+    {loading && <Loader />}
     <div>
-      {comments.length ? <div className='bg-gray-400 rounded-md p-2 mt-2 overflow-auto'>
+      {comments.length ? <div className='bg-gray-400 rounded-md p-2 mt-2 overflow-auto w-full h-full'>
         <table id="table">
           <thead>
             <th>نام کاربر</th>
@@ -90,5 +94,5 @@ export const Comments = () => {
         deleteMethod={deleteComment} />}
       <ToastContainer />
     </div>
-  )
+  </>)
 }

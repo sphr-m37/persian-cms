@@ -33,3 +33,13 @@ export { orderReducer } from './redux/reducers/orderReducer'
 export { discountReducer } from './redux/reducers/discountReducer'
 // custom hook
 export { useInput } from './hooks/useInput'
+// TYPES
+export {
+    GET_PRODUCTS,
+    GET_USERS,
+    GET_COMMENTS,
+    GET_ORDERS,
+    GET_DISCOUNTS,
+    LOADING,
+    LOADED,
+} from './redux/Types'
