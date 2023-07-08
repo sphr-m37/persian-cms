@@ -3,6 +3,7 @@ import { Button } from '../index'
 import { useNavigate } from 'react-router-dom'
 
 export const NotFound = () => {
+
   const redirect = useNavigate()
   return (
     <div className='w-full text-center'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 // routing
 import { useRoutes } from 'react-router-dom'
 import { routes } from './index'
@@ -10,8 +10,12 @@ import './App.css'
 // redux
 import { store } from './index'
 import { Provider } from 'react-redux'
+import { useEffect } from 'react'
 
 export const App = () => {
+  useEffect(() => {
+    document.title = 'persian_cms'
+  }, [])
   const route = useRoutes(routes)
   return (
     <Provider store={store}>
